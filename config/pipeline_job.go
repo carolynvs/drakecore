@@ -36,7 +36,7 @@ func (p *pipelineJob) resolveJobAndDependencies(
 			}
 			return errors.Errorf(
 				"job %q depends on job %q, which is defined, but does not precede %q "+
-					"this pipeline",
+					"in this pipeline",
 				p.Name,
 				dependency,
 				p.Name,
