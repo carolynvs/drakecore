@@ -14,9 +14,58 @@ func TestNewConfigFromYAML(t *testing.T) {
 		assertions func(*testing.T, Config, error)
 	}{
 		{
+			name: "undefined specUri field",
+			yamlBytes: []byte(`
+specVersion: v0.1.0`,
+			),
+			assertions: func(t *testing.T, _ Config, err error) {
+				require.Error(t, err)
+				require.Contains(t, err.Error(), "specUri is a required field")
+			},
+		},
+
+		{
+			name: "unsupported spec in specUri field",
+			yamlBytes: []byte(`
+specUri: github.com/lovethedrake/bogus-spec
+specVersion: v0.1.0`,
+			),
+			assertions: func(t *testing.T, _ Config, err error) {
+				require.Error(t, err)
+				require.Contains(t, err.Error(), "github.com/lovethedrake/bogus-spec")
+				require.Contains(t, err.Error(), "is not a supported")
+			},
+		},
+
+		{
+			name: "undefined specVersion field",
+			yamlBytes: []byte(`
+specUri: github.com/lovethedrake/drakespec`,
+			),
+			assertions: func(t *testing.T, _ Config, err error) {
+				require.Error(t, err)
+				require.Contains(t, err.Error(), "specVersion is a required field")
+			},
+		},
+
+		{
+			name: "invalid specVersion field",
+			yamlBytes: []byte(`
+specUri: github.com/lovethedrake/drakespec
+specVersion: bogus`,
+			),
+			assertions: func(t *testing.T, _ Config, err error) {
+				require.Error(t, err)
+				require.Contains(t, err.Error(), "bogus")
+				require.Contains(t, err.Error(), "is not a valid semantic version")
+			},
+		},
+
+		{
 			name: "undefined job",
 			yamlBytes: []byte(`
-version: v1.0.0
+specUri: github.com/lovethedrake/drakespec
+specVersion: v0.1.0
 pipelines:
   foobar:
     jobs:
@@ -35,7 +84,8 @@ pipelines:
 		{
 			name: "undefined job dependency",
 			yamlBytes: []byte(`
-version: v1.0.0
+specUri: github.com/lovethedrake/drakespec
+specVersion: v0.1.0
 jobs:
   bar:
     containers:
@@ -62,7 +112,8 @@ pipelines:
 		{
 			name: "job dependency does not precede job in pipeline",
 			yamlBytes: []byte(`
-version: v1.0.0
+specUri: github.com/lovethedrake/drakespec
+specVersion: v0.1.0
 baseDemoContainer: &baseDemoContainer
   name: demo
   image: debian:stretch
@@ -96,7 +147,8 @@ pipelines:
 		{
 			name: "job depends on itself",
 			yamlBytes: []byte(`
-version: v1.0.0
+specUri: github.com/lovethedrake/drakespec
+specVersion: v0.1.0
 jobs:
   foo:
     containers:
@@ -124,7 +176,8 @@ pipelines:
 		{
 			name: "job appears in pipeline more than once",
 			yamlBytes: []byte(`
-version: v1.0.0
+specUri: github.com/lovethedrake/drakespec
+specVersion: v0.1.0
 jobs:
   foo:
     containers:
@@ -151,7 +204,8 @@ pipelines:
 		{
 			name: "valid config",
 			yamlBytes: []byte(`
-version: v1.0.0
+specUri: github.com/lovethedrake/drakespec
+specVersion: v0.1.0
 baseDemoContainer: &baseDemoContainer
   name: demo
   image: debian:stretch
