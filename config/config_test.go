@@ -221,9 +221,8 @@ jobs:
 pipelines:
   foobar:
     triggers:
-    - spec:
-        uri: github.com/lovethedrake/drakespec-github
-        version: v1.0.0
+    - specUri: github.com/lovethedrake/drakespec-github
+      specVersion: v1.0.0
       config:
         branches:
           only:
@@ -305,16 +304,15 @@ pipelines:
 				// Check that we got our triggers for the foobar pipeline
 				require.Len(t, foobarPipeline.Triggers(), 1)
 				trigger := foobarPipeline.Triggers()[0]
-				triggerSpec := trigger.Spec()
 				require.Equal(
 					t,
 					"github.com/lovethedrake/drakespec-github",
-					triggerSpec.URI(),
+					trigger.SpecURI(),
 				)
 				require.Equal(
 					t,
 					"v1.0.0",
-					triggerSpec.Version(),
+					trigger.SpecVersion(),
 				)
 				require.NotEmpty(t, trigger.Config())
 				require.True(

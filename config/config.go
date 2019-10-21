@@ -152,7 +152,7 @@ func (c *config) UnmarshalJSON(data []byte) error {
 			triggers: make([]PipelineTrigger, len(flatPipeline.Triggers)),
 			jobs:     make([]PipelineJob, len(flatPipeline.Jobs)),
 		}
-		// Step through all the triggers (implementations) and add to an slice of
+		// Step through all the triggers (implementations) and add to a slice of
 		// Triggers (interfaces).
 		for j, trigger := range flatPipeline.Triggers {
 			pipeline.triggers[j] = trigger
