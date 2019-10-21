@@ -33,7 +33,11 @@ specVersion: v0.1.0`,
 			assertions: func(t *testing.T, _ Config, err error) {
 				require.Error(t, err)
 				require.Contains(t, err.Error(), "github.com/lovethedrake/bogus-spec")
-				require.Contains(t, err.Error(), "is not a supported")
+				require.Contains(
+					t,
+					err.Error(),
+					"does not reference a supported specification",
+				)
 			},
 		},
 
@@ -58,6 +62,19 @@ specVersion: bogus`,
 				require.Error(t, err)
 				require.Contains(t, err.Error(), "bogus")
 				require.Contains(t, err.Error(), "is not a valid semantic version")
+			},
+		},
+
+		{
+			name: "unsupported specVersion",
+			yamlBytes: []byte(`
+specUri: github.com/lovethedrake/drakespec
+specVersion: v1.0.0`,
+			),
+			assertions: func(t *testing.T, _ Config, err error) {
+				require.Error(t, err)
+				require.Contains(t, err.Error(), "v1.0.0")
+				require.Contains(t, err.Error(), "is not a supported version")
 			},
 		},
 

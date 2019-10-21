@@ -90,7 +90,8 @@ func (c *config) UnmarshalJSON(data []byte) error {
 	}
 	if flatCfg.SpecURI != drakeSpecURI {
 		return errors.Errorf(
-			"specUri %q is not a supported; only %q is supported.",
+			"specUri %q does not reference a supported specification; only %q is "+
+				"supported.",
 			flatCfg.SpecURI,
 			drakeSpecURI,
 		)
@@ -111,7 +112,7 @@ func (c *config) UnmarshalJSON(data []byte) error {
 	supportedVersion, _ := semver.NewVersion(supportedVersionStr)
 	if !specVersion.Equal(supportedVersion) {
 		return errors.Errorf(
-			"specUri %q is not a supported; only %q is supported.",
+			"specVersion %q is not a supported version; only %q is supported.",
 			flatCfg.SpecVersion,
 			supportedVersionStr,
 		)
