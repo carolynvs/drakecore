@@ -76,6 +76,10 @@ var jsonSchemaBytes = []byte(`
 				"sourceMountPath": {
 					"type": "string",
 					"description": "Where within the container to mount project source code"
+				},
+				"sharedStorageMountPath": {
+					"type": "string",
+					"description": "Where within the container to mount shared storage"
 				}
 			}
 		},
