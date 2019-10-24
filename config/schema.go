@@ -27,7 +27,6 @@ var jsonSchemaBytes = []byte(`
 				"containers": {
 					"type": "array",
 					"description": "The OCI containers that participate in the job",
-					"minItems": 1,
 					"items": { "$ref": "#/definitions/container" }
 				}
 			}
@@ -84,7 +83,6 @@ var jsonSchemaBytes = []byte(`
 		"pipeline": {
 			"type": "object",
 			"description": "A single pipeline",
-			"required": ["jobs"],
 			"additionalProperties": false,
 			"properties": {
 				"triggers": {
@@ -95,7 +93,6 @@ var jsonSchemaBytes = []byte(`
 				"jobs": {
 					"type": "array",
 					"description": "The jobs that make up this pipeline",
-					"minItems": 1,
 					"items": { "$ref": "#/definitions/pipelineJob" }
 				}
 			}
@@ -144,7 +141,7 @@ var jsonSchemaBytes = []byte(`
 
   "title": "Config",
 	"type": "object",
-	"required": ["specUri", "specVersion", "jobs"],
+	"required": ["specUri", "specVersion"],
 	"additionalProperties": false,
   "properties": {
     "specUri": {
@@ -164,7 +161,6 @@ var jsonSchemaBytes = []byte(`
       "type": "object",
 			"description": "A map of jobs indexed by unique names",
 			"additionalProperties": false,
-			"minProperties": 1,
 			"patternProperties": {
 				"^\\w[\\w-]*$": { "$ref": "#/definitions/job" }
 			}
