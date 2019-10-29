@@ -28,6 +28,11 @@ var jsonSchemaBytes = []byte(`
 					"type": "array",
 					"description": "The OCI containers that participate in the job",
 					"items": { "$ref": "#/definitions/container" }
+				},
+				"sourceMountMode": {
+					"type": "string",
+					"description": "The mode to use if/when mounting source code into any of the job's containers",
+					"enum": [ "RO", "COPY", "RW" ]
 				}
 			}
 		},
@@ -76,6 +81,10 @@ var jsonSchemaBytes = []byte(`
 				"sourceMountPath": {
 					"type": "string",
 					"description": "Where within the container to mount project source code"
+				},
+				"sharedStorageMountPath": {
+					"type": "string",
+					"description": "Where within the container to mount shared storage"
 				}
 			}
 		},
