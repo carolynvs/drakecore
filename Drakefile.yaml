@@ -70,6 +70,8 @@ pipelines:
 
   ci:
     triggers:
+    # This is a placeholder. No formal spec exists for this trigger yet.
+    # Stay tuned.
     - specUri: github.com/lovethedrake/drakespec-github
       specVersion: v1.0.0
       config:
