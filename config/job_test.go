@@ -13,9 +13,18 @@ func TestJobName(t *testing.T) {
 	require.Equal(t, job.name, job.Name())
 }
 
-func TestJobContainers(t *testing.T) {
+func TestJobPrimaryContainer(t *testing.T) {
 	job := &job{
-		containers: []Container{
+		primaryContainer: &container{
+			ContainerName: "foo",
+		},
+	}
+	require.Equal(t, job.primaryContainer, job.PrimaryContainer())
+}
+
+func TestJobSicecarContainers(t *testing.T) {
+	job := &job{
+		sidecarContainers: []Container{
 			&container{
 				ContainerName: "foo",
 			},
@@ -24,7 +33,7 @@ func TestJobContainers(t *testing.T) {
 			},
 		},
 	}
-	require.Equal(t, job.containers, job.Containers())
+	require.Equal(t, job.sidecarContainers, job.SidecarContainers())
 }
 
 func TestJobSourceMountMode(t *testing.T) {
