@@ -16,11 +16,11 @@ func TestNewConfigFromYAML(t *testing.T) {
 		{
 			name: "undefined specUri field",
 			yamlBytes: []byte(`
-specVersion: v0.1.0
+specVersion: v0.2.0
 jobs:
   foo:
-    containers:
-    - name: demo
+    primaryContainer:
+      name: demo
       image: debian:stretch
       command: ["echo"]
       args: ["foo"]`,
@@ -35,11 +35,11 @@ jobs:
 			name: "unsupported spec in specUri field",
 			yamlBytes: []byte(`
 specUri: github.com/lovethedrake/bogus-spec
-specVersion: v0.1.0
+specVersion: v0.2.0
 jobs:
   foo:
-    containers:
-    - name: demo
+    primaryContainer:
+      name: demo
       image: debian:stretch
       command: ["echo"]
       args: ["foo"]`,
@@ -57,8 +57,8 @@ jobs:
 specUri: github.com/lovethedrake/drakespec
 jobs:
   foo:
-    containers:
-    - name: demo
+    primaryContainer:
+      name: demo
       image: debian:stretch
       command: ["echo"]
       args: ["foo"]`,
@@ -76,8 +76,8 @@ specUri: github.com/lovethedrake/drakespec
 specVersion: bogus
 jobs:
   foo:
-    containers:
-    - name: demo
+    primaryContainer:
+      name: demo
       image: debian:stretch
       command: ["echo"]
       args: ["foo"]`,
@@ -89,7 +89,7 @@ jobs:
 					err.Error(),
 					"specVersion must be one of the following",
 				)
-				require.Contains(t, err.Error(), "v0.1.0")
+				require.Contains(t, err.Error(), "v0.2.0")
 			},
 		},
 
@@ -117,11 +117,11 @@ jobs:
 			name: "undefined job",
 			yamlBytes: []byte(`
 specUri: github.com/lovethedrake/drakespec
-specVersion: v0.1.0
+specVersion: v0.2.0
 jobs:
   bar:
-    containers:
-    - name: demo
+    primaryContainer:
+      name: demo
       image: debian:stretch
       command: ["echo"]
       args: ["bar"]
@@ -144,11 +144,11 @@ pipelines:
 			name: "undefined job dependency",
 			yamlBytes: []byte(`
 specUri: github.com/lovethedrake/drakespec
-specVersion: v0.1.0
+specVersion: v0.2.0
 jobs:
   bar:
-    containers:
-    - name: demo
+    primaryContainer:
+      name: demo
       image: debian:stretch
       command: ["echo"]
       args: ["bar"]
@@ -173,11 +173,11 @@ pipelines:
 			name: "pipeline references job with sourceMountMode RW",
 			yamlBytes: []byte(`
 specUri: github.com/lovethedrake/drakespec
-specVersion: v0.1.0
+specVersion: v0.2.0
 jobs:
   foo:
-    containers:
-    - name: demo
+    primaryContainer:
+      name: demo
       image: debian:stretch
       command: ["echo"]
       args: ["foo"]
@@ -202,20 +202,20 @@ pipelines:
 			name: "job dependency does not precede job in pipeline",
 			yamlBytes: []byte(`
 specUri: github.com/lovethedrake/drakespec
-specVersion: v0.1.0
+specVersion: v0.2.0
 snippets:
   baseDemoContainer: &baseDemoContainer
     name: demo
     image: debian:stretch
 jobs:
   foo:
-    containers:
-    - <<: *baseDemoContainer
+    primaryContainer:
+      <<: *baseDemoContainer
       command: ["echo"]
       args: ["foo"]
   bar:
-    containers:
-    - <<: *baseDemoContainer
+    primaryContainer:
+      <<: *baseDemoContainer
       command: ["echo"]
       args: ["bar"]
 pipelines:
@@ -240,11 +240,11 @@ pipelines:
 			name: "job depends on itself",
 			yamlBytes: []byte(`
 specUri: github.com/lovethedrake/drakespec
-specVersion: v0.1.0
+specVersion: v0.2.0
 jobs:
   foo:
-    containers:
-    - name: demo
+    primaryContainer:
+      name: demo
       image: debian:stretch
       command: ["echo"]
       args: ["foo"]
@@ -270,11 +270,11 @@ pipelines:
 			name: "job appears in pipeline more than once",
 			yamlBytes: []byte(`
 specUri: github.com/lovethedrake/drakespec
-specVersion: v0.1.0
+specVersion: v0.2.0
 jobs:
   foo:
-    containers:
-    - name: demo
+    primaryContainer:
+      name: demo
       image: debian:stretch
       command: ["echo"]
       args: ["foo"]
@@ -299,20 +299,20 @@ pipelines:
 			name: "valid config",
 			yamlBytes: []byte(`
 specUri: github.com/lovethedrake/drakespec
-specVersion: v0.1.0
+specVersion: v0.2.0
 snippets:
   baseDemoContainer: &baseDemoContainer
     name: demo
     image: debian:stretch
 jobs:
   foo:
-    containers:
-    - <<: *baseDemoContainer
+    primaryContainer:
+      <<: *baseDemoContainer
       command: ["echo"]
       args: ["foo"]
   bar:
-    containers:
-    - <<: *baseDemoContainer
+    primaryContainer:
+      <<: *baseDemoContainer
       command: ["echo"]
       args: ["bar"]
     sourceMountMode: COPY
