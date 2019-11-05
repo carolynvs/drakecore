@@ -1,5 +1,5 @@
 specUri: github.com/lovethedrake/drakespec
-specVersion: v0.1.0
+specVersion: v0.3.0
 
 snippets:
 
@@ -9,6 +9,11 @@ snippets:
     sourceMountPath: /go/src/github.com/lovethedrake/drakecore
     workingDirectory: /go/src/github.com/lovethedrake/drakecore
     tty: true
+    resources:
+      cpu:
+        maxMillicores: 2000
+      memory:
+        maxMegabytes: 2048
 
 jobs:
 
@@ -17,8 +22,8 @@ jobs:
 ################################################################################
 
   dep:
-    containers:
-    - <<: *baseGoContainer
+    primaryContainer:
+      <<: *baseGoContainer
       command: ["dep", "ensure"]
       args: ["-v"]
     sourceMountMode: RW
@@ -28,13 +33,13 @@ jobs:
 ################################################################################
 
   verify-vendored-code:
-    containers:
-    - <<: *baseGoContainer
+    primaryContainer:
+      <<: *baseGoContainer
       command: ["dep", "check"]
 
   test:
-    containers:
-    - <<: *baseGoContainer
+    primaryContainer:
+      <<: *baseGoContainer
       command: ["go", "test"]
       args:
       - -timeout
@@ -46,15 +51,15 @@ jobs:
       sharedStorageMountPath: /shared
 
   upload-coverage-report:
-    containers:
-    - <<: *baseGoContainer
+    primaryContainer:
+      <<: *baseGoContainer
       command: ["bash", "-c"]
       args: ["bash <(curl -s https://codecov.io/bash) -f /shared/coverage.txt"]
       sharedStorageMountPath: /shared
 
   lint:
-    containers:
-    - <<: *baseGoContainer
+    primaryContainer:
+      <<: *baseGoContainer
       command: ["golangci-lint", "run"]
       args: ["./..."]
 

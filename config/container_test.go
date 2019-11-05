@@ -93,3 +93,23 @@ func TestContainerSharedStorageMountPath(t *testing.T) {
 		container.SharedStorageMountPath(),
 	)
 }
+
+func TestContainerResources(t *testing.T) {
+	// Make sure we get a default value for Resources if none was specified
+	c := &container{}
+	require.Equal(t, &resources{}, c.Resources())
+
+	// Make sure we get back the right Resources if one was specified
+	maxMillicores := 200
+	maxMegabytes := 512
+	c = &container{
+		Resourcez: &resources{
+			CPUU: &cpu{
+				MaxMillicorez: &maxMillicores,
+			},
+			Memorie: &memory{
+				MaxMegabytez: &maxMegabytes,
+			},
+		},
+	}
+}
