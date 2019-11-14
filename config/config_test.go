@@ -16,7 +16,7 @@ func TestNewConfigFromYAML(t *testing.T) {
 		{
 			name: "undefined specUri field",
 			yamlBytes: []byte(`
-specVersion: v0.3.0
+specVersion: v0.4.0
 jobs:
   foo:
     primaryContainer:
@@ -35,7 +35,7 @@ jobs:
 			name: "unsupported spec in specUri field",
 			yamlBytes: []byte(`
 specUri: github.com/lovethedrake/bogus-spec
-specVersion: v0.3.0
+specVersion: v0.4.0
 jobs:
   foo:
     primaryContainer:
@@ -89,7 +89,7 @@ jobs:
 					err.Error(),
 					"specVersion must be one of the following",
 				)
-				require.Contains(t, err.Error(), "v0.3.0")
+				require.Contains(t, err.Error(), "v0.4.0")
 			},
 		},
 
@@ -117,7 +117,7 @@ jobs:
 			name: "undefined job",
 			yamlBytes: []byte(`
 specUri: github.com/lovethedrake/drakespec
-specVersion: v0.3.0
+specVersion: v0.4.0
 jobs:
   bar:
     primaryContainer:
@@ -144,7 +144,7 @@ pipelines:
 			name: "undefined job dependency",
 			yamlBytes: []byte(`
 specUri: github.com/lovethedrake/drakespec
-specVersion: v0.3.0
+specVersion: v0.4.0
 jobs:
   bar:
     primaryContainer:
@@ -173,7 +173,7 @@ pipelines:
 			name: "pipeline references job with sourceMountMode RW",
 			yamlBytes: []byte(`
 specUri: github.com/lovethedrake/drakespec
-specVersion: v0.3.0
+specVersion: v0.4.0
 jobs:
   foo:
     primaryContainer:
@@ -202,7 +202,7 @@ pipelines:
 			name: "job dependency does not precede job in pipeline",
 			yamlBytes: []byte(`
 specUri: github.com/lovethedrake/drakespec
-specVersion: v0.3.0
+specVersion: v0.4.0
 snippets:
   baseDemoContainer: &baseDemoContainer
     name: demo
@@ -240,7 +240,7 @@ pipelines:
 			name: "job depends on itself",
 			yamlBytes: []byte(`
 specUri: github.com/lovethedrake/drakespec
-specVersion: v0.3.0
+specVersion: v0.4.0
 jobs:
   foo:
     primaryContainer:
@@ -270,7 +270,7 @@ pipelines:
 			name: "job appears in pipeline more than once",
 			yamlBytes: []byte(`
 specUri: github.com/lovethedrake/drakespec
-specVersion: v0.3.0
+specVersion: v0.4.0
 jobs:
   foo:
     primaryContainer:
@@ -299,11 +299,12 @@ pipelines:
 			name: "valid config",
 			yamlBytes: []byte(`
 specUri: github.com/lovethedrake/drakespec
-specVersion: v0.3.0
+specVersion: v0.4.0
 snippets:
   baseDemoContainer: &baseDemoContainer
     name: demo
     image: debian:stretch
+    imagePullPolicy: IfNotPresent
 jobs:
   foo:
     primaryContainer:

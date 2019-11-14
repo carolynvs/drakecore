@@ -20,6 +20,17 @@ func TestContainerImage(t *testing.T) {
 	require.Equal(t, container.Img, container.Image())
 }
 
+func TestContainerImagePullPolicy(t *testing.T) {
+	c := &container{
+		ImgPullPolicy: ImagePullPolicyAlways,
+	}
+	require.Equal(t, c.ImgPullPolicy, c.ImagePullPolicy())
+
+	// Test default value
+	c = &container{}
+	require.Equal(t, ImagePullPolicyIfNotPresent, c.ImagePullPolicy())
+}
+
 func TestContainerEnvironment(t *testing.T) {
 	container := &container{
 		Env: []string{
